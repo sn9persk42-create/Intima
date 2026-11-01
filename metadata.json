@@ -1,0 +1,6 @@
+{
+  "name": "INTIMA",
+  "description": "Application d'accompagnement émotionnel, de communication de couple et de relations amoureuses avec IA bienveillante.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

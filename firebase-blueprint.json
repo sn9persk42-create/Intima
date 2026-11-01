@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with relationship status, emotional focus and privacy settings",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Firebase Auth UID" },
+        "email": { "type": "string", "description": "User email address" },
+        "displayName": { "type": "string", "description": "Display name or alias" },
+        "relationshipStatus": { "type": "string", "enum": ["single", "couple", "complicated", "divorced", "dating", "prefer_not_to_say"] },
+        "partnerName": { "type": "string", "description": "Partner's first name or nickname (optional)" },
+        "subscriptionTier": { "type": "string", "enum": ["free", "premium"] },
+        "anonymousMode": { "type": "boolean" },
+        "dataRetentionDays": { "type": "number" },
+        "language": { "type": "string", "enum": ["fr", "en"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "subscriptionTier", "createdAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Conversation thread between user and INTIMA emotional coach",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Conversation unique identifier" },
+        "userId": { "type": "string", "description": "Owner user UID" },
+        "title": { "type": "string", "description": "Conversation topic title" },
+        "topic": { "type": "string", "enum": ["communication", "conflict_resolution", "dating_advice", "emotional_support", "intimacy_rekindling", "breakup_healing", "general"] },
+        "messageCount": { "type": "number", "description": "Total messages in this thread" },
+        "pinned": { "type": "boolean" },
+        "lastMessageSnippet": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "title", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Message entry in a conversation with facts vs suppositions breakdown",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Message ID" },
+        "conversationId": { "type": "string", "description": "Parent conversation ID" },
+        "userId": { "type": "string", "description": "Owner UID" },
+        "sender": { "type": "string", "enum": ["user", "assistant"] },
+        "content": { "type": "string", "description": "Main text content" },
+        "facts": { "type": "string", "description": "Objective observed facts distinguished from assumptions" },
+        "hypotheses": { "type": "string", "description": "Emotions, possible perspectives, and non-certain suppositions" },
+        "suggestedAction": { "type": "string", "description": "Actionable non-violent communication recommendation" },
+        "liked": { "type": "boolean" },
+        "disliked": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "conversationId", "userId", "sender", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "UserProfile" },
+      "description": "User profile with relationship status and privacy preferences"
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "Conversation" },
+      "description": "User relationship conversation sessions"
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "Message" },
+      "description": "Messages inside a conversation"
+    }
+  }
+}
